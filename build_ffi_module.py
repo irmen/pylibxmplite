@@ -195,8 +195,6 @@ macros =  [
             ("HAVE_STRINGS_H", "1"),
             ("HAVE_INTTYPES_H", "1"),
             ("HAVE_STDINT_H", "1"),
-            ("HAVE_UNISTD_H", "1"),
-            ("HAVE_LIBM", "1"),
             ("HAVE_LOCALTIME_R", "1"),
             ("HAVE_ROUND", "1"),
             ("HAVE_POWF", "1"),
@@ -211,6 +209,10 @@ macros =  [
 if os.name == "posix":
     libraries = []  # ["m", "pthread", "dl"]
     compiler_args = ["-g1", "-O3" ]
+    macros.extend([
+            ("HAVE_LIBM", "1"),
+            ("HAVE_UNISTD_H", "1"),
+    	])
 
 
 ffibuilder.set_source("_libxmplite", """
