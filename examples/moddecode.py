@@ -12,6 +12,7 @@ import libxmplite
 if len(sys.argv) != 2:
     raise SystemExit("must give mod filename to play as argument")
 
+print("Library version:", libxmplite.__version__, "   libxmp-lite version:", libxmplite.xmp_version)
 print("Supported module formats: ", libxmplite.get_formats())
 
 xmp = libxmplite.Xmp()

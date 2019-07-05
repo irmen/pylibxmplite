@@ -5,7 +5,7 @@
 # Python libxmp-lite  modplayer
 
 This module (pun intented) provides a Python interface to the
-libxmp-lite (a cut-down version of libxmp) library.
+libxmp-lite (a cut-down version of [libxmp](https://github.com/cmatsuoka/libxmp) library.
 The libxmp-lite library is linked into the extenson module, no additional
 fiddling and installation is required. 
 
@@ -48,3 +48,5 @@ xmp.release()
 
 There's also a ``xmp.play_buffer()`` method that is more suited to be integrated
 into an async pull API.
+
+There's also extensive documentation for the underlying [libxmp API](https://github.com/cmatsuoka/libxmp/blob/master/docs/libxmp.rst).

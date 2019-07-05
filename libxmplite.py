@@ -16,7 +16,7 @@ from _libxmplite.lib import XMP_FORMAT_8BIT, XMP_FORMAT_UNSIGNED, XMP_FORMAT_MON
 
 
 __version__ = "1.0"
-__libversion__ = ffi.string(lib.xmp_version).decode()
+xmp_version = ffi.string(lib.xmp_version).decode()
 
 
 XEvent = namedtuple("Event", ["note", "ins", "vol", "fxt", "fxp", "f2t", "f2p"])
@@ -52,7 +52,7 @@ class FrameInfo:
     total_time = 0
     frame_time = 0
     buffer = memoryview(b"")
-    # buffer_size = 0
+    buffer_size = 0         # you can use len(buffer) as well
     total_size = 0
     volume = 0
     loop_count = 0
@@ -196,6 +196,8 @@ class Xmp:
         return info
 
 
+# TODO: implement the song control functions
+# TODO: implement the external sample mixer functions?
 """
 int         xmp_next_position   (xmp_context);
 int         xmp_prev_position   (xmp_context);
@@ -209,7 +211,6 @@ int         xmp_set_player      (xmp_context, int, int);
 int         xmp_get_player      (xmp_context, int);
 int         xmp_set_instrument_path (xmp_context, char *);
 
-/* External sample mixer API */
 int         xmp_start_smix       (xmp_context, int, int);
 void        xmp_end_smix         (xmp_context);
 int         xmp_smix_play_instrument(xmp_context, int, int, int, int);
@@ -217,5 +218,4 @@ int         xmp_smix_play_sample (xmp_context, int, int, int, int);
 int         xmp_smix_channel_pan (xmp_context, int, int);
 int         xmp_smix_load_sample (xmp_context, int, char *);
 int         xmp_smix_release_sample (xmp_context, int);
-
 """
