@@ -47,6 +47,8 @@ xmp.release()
 ```
 
 There's also a ``xmp.play_buffer()`` method that is more suited to be integrated
-into an async pull API.
+into an async pull API. It's used in the "modplay" example (which utilizes my
+other library, [miniaudio](https://github.com/irmen/pyminiaudio), for sound playback).
+
 
 There's also extensive documentation for the underlying [libxmp API](https://github.com/cmatsuoka/libxmp/blob/master/docs/libxmp.rst).
