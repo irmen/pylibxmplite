@@ -15,7 +15,7 @@ from _libxmplite import lib, ffi
 from _libxmplite.lib import XMP_FORMAT_8BIT, XMP_FORMAT_UNSIGNED, XMP_FORMAT_MONO
 
 
-__version__ = "1.0"
+__version__ = "1.1"
 xmp_version = ffi.string(lib.xmp_version).decode()
 
 

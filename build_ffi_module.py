@@ -210,20 +210,23 @@ if os.name == "posix":
     libraries = []  # ["m", "pthread", "dl"]
     compiler_args = ["-g1", "-O3" ]
     macros.extend([
-            ("HAVE_LIBM", "1"),
-            ("HAVE_UNISTD_H", "1"),
-    	])
+        ("HAVE_LIBM", "1"),
+        ("HAVE_UNISTD_H", "1"),
+    ])
+
+
+custom_sources = []
+libxmp_sources = glob.glob("libxmp-lite/src/*.c") + glob.glob("libxmp-lite/src/loaders/*.c")
+if len(libxmp_sources) != 26:
+    raise IOError("libxmp sources missing or partially missing! Packaging error? (expecting 26 .c files)")
 
 
 ffibuilder.set_source("_libxmplite", """
   
     #include <xmp.h>
-  
 
 """,
-                      sources=[] +
-                                glob.glob("libxmp-lite/src/*.c") +
-                                glob.glob("libxmp-lite/src/loaders/*.c"),
+                      sources=custom_sources + libxmp_sources,
                       include_dirs=["./libxmp-lite/include/libxmp-lite",
                                     "./libxmp-lite/src",
                                     "./libxmp-lite/src/loaders"
