@@ -1,0 +1,62 @@
+
+src/virtual.o src/virtual.lo: src/virtual.c src/common.h include/libxmp-lite/xmp.h \
+ src/virtual.h src/mixer.h
+src/format.o src/format.lo: src/format.c src/format.h src/common.h \
+ include/libxmp-lite/xmp.h src/hio.h src/memio.h
+src/period.o src/period.lo: src/period.c src/common.h include/libxmp-lite/xmp.h \
+ src/period.h
+src/player.o src/player.lo: src/player.c src/virtual.h src/common.h \
+ include/libxmp-lite/xmp.h src/period.h src/effects.h src/player.h \
+ src/lfo.h src/mixer.h
+src/read_event.o src/read_event.lo: src/read_event.c src/common.h include/libxmp-lite/xmp.h \
+ src/player.h src/lfo.h src/effects.h src/virtual.h src/period.h
+src/dataio.o src/dataio.lo: src/dataio.c src/common.h include/libxmp-lite/xmp.h
+src/lfo.o src/lfo.lo: src/lfo.c src/lfo.h src/common.h include/libxmp-lite/xmp.h
+src/scan.o src/scan.lo: src/scan.c src/common.h include/libxmp-lite/xmp.h src/effects.h \
+ src/mixer.h
+src/control.o src/control.lo: src/control.c src/format.h src/common.h \
+ include/libxmp-lite/xmp.h src/hio.h src/memio.h src/virtual.h \
+ src/mixer.h
+src/filter.o src/filter.lo: src/filter.c include/libxmp-lite/xmp.h src/common.h src/mixer.h
+src/effects.o src/effects.lo: src/effects.c src/common.h include/libxmp-lite/xmp.h \
+ src/player.h src/lfo.h src/effects.h src/period.h src/virtual.h \
+ src/mixer.h
+src/mixer.o src/mixer.lo: src/mixer.c src/common.h include/libxmp-lite/xmp.h src/virtual.h \
+ src/mixer.h src/period.h src/player.h src/lfo.h
+src/mix_all.o src/mix_all.lo: src/mix_all.c src/common.h include/libxmp-lite/xmp.h \
+ src/virtual.h src/mixer.h src/precomp_lut.h
+src/load_helpers.o src/load_helpers.lo: src/load_helpers.c src/common.h include/libxmp-lite/xmp.h \
+ src/loaders/loader.h src/common.h src/effects.h src/format.h src/hio.h \
+ src/memio.h src/hio.h
+src/load.o src/load.lo: src/load.c src/format.h src/common.h include/libxmp-lite/xmp.h \
+ src/hio.h src/memio.h src/list.h src/tempfile.h
+src/hio.o src/hio.lo: src/hio.c src/common.h include/libxmp-lite/xmp.h src/hio.h \
+ src/memio.h src/mdataio.h
+src/smix.o src/smix.lo: src/smix.c src/common.h include/libxmp-lite/xmp.h src/period.h \
+ src/player.h src/lfo.h src/hio.h src/memio.h
+src/memio.o src/memio.lo: src/memio.c src/common.h include/libxmp-lite/xmp.h src/memio.h
+src/win32.o src/win32.lo: src/win32.c
+src/loaders/common.o src/loaders/common.lo: src/loaders/common.c include/libxmp-lite/xmp.h src/common.h \
+ src/period.h src/loaders/loader.h src/effects.h src/format.h \
+ src/common.h src/hio.h src/memio.h src/hio.h
+src/loaders/itsex.o src/loaders/itsex.lo: src/loaders/itsex.c src/loaders/loader.h src/common.h \
+ include/libxmp-lite/xmp.h src/effects.h src/format.h src/common.h \
+ src/hio.h src/memio.h src/hio.h
+src/loaders/sample.o src/loaders/sample.lo: src/loaders/sample.c src/common.h include/libxmp-lite/xmp.h \
+ src/loaders/loader.h src/effects.h src/format.h src/common.h src/hio.h \
+ src/memio.h src/hio.h
+src/loaders/xm_load.o src/loaders/xm_load.lo: src/loaders/xm_load.c src/loaders/loader.h src/common.h \
+ include/libxmp-lite/xmp.h src/effects.h src/format.h src/common.h \
+ src/hio.h src/memio.h src/hio.h src/loaders/xm.h
+src/loaders/mod_load.o src/loaders/mod_load.lo: src/loaders/mod_load.c src/loaders/loader.h src/common.h \
+ include/libxmp-lite/xmp.h src/effects.h src/format.h src/common.h \
+ src/hio.h src/memio.h src/hio.h src/loaders/mod.h
+src/loaders/s3m_load.o src/loaders/s3m_load.lo: src/loaders/s3m_load.c src/loaders/loader.h src/common.h \
+ include/libxmp-lite/xmp.h src/effects.h src/format.h src/common.h \
+ src/hio.h src/memio.h src/hio.h src/loaders/s3m.h src/period.h
+src/loaders/it_load.o src/loaders/it_load.lo: src/loaders/it_load.c src/loaders/loader.h src/common.h \
+ include/libxmp-lite/xmp.h src/effects.h src/format.h src/common.h \
+ src/hio.h src/memio.h src/hio.h src/loaders/it.h src/period.h
+test/test.o test/test.lo: test/test.c test/md5.h src/common.h include/libxmp-lite/xmp.h
+test/md5.o test/md5.lo: test/md5.c test/../src/common.h include/libxmp-lite/xmp.h \
+ test/md5.h src/common.h

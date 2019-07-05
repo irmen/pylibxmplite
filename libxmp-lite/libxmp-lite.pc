@@ -1,0 +1,13 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/libxmp-lite
+
+Name: libxmp-lite
+Description: Xmp lite module player library
+Version: 4.5.0
+
+Requires:
+Libs: -L${libdir} -lxmp-lite
+Cflags: -I${includedir}
+Libs.private: -lm
