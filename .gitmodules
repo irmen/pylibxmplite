@@ -1,0 +1,4 @@
+[submodule "libxmp-lite"]
+	path = libxmp-lite
+	url = https://github.com/irmen/libxmp-lite
+	branch = master
