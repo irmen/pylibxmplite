@@ -1,12 +1,8 @@
 """
-Python interface to the miniaudio library (https://github.com/dr-soft/miniaudio)
+Python interface to the libxmp-lite library (part of https://github.com/cmatsuoka/libxmp)
+plays Protracker (MOD), Scream Tracker 3 (S3M), Fast Tracker II (XM), and Impulse Tracker (IT).
 
-This module Use CFFI to create the glue code but also to actually compile the decoders in one go!
-Sound formats supported:
- - ogg vorbis via stb_vorbis
- - mp3 via dr_mp3
- - wav via dr_wav
- - flac via dr_flac
+This module uses CFFI to create the glue code but also to actually compile everything else too!
 
 Author: Irmen de Jong (irmen@razorvine.net)
 Software license: "MIT software license". See http://opensource.org/licenses/MIT
@@ -18,7 +14,6 @@ import glob
 from cffi import FFI
 
 root_include_dir = os.getcwd()
-
 
 
 ffibuilder = FFI()
@@ -178,13 +173,6 @@ int         xmp_smix_play_sample (xmp_context, int, int, int, int);
 int         xmp_smix_channel_pan (xmp_context, int, int);
 int         xmp_smix_load_sample (xmp_context, int, char *);
 int         xmp_smix_release_sample (xmp_context, int);
-    
-    /* misc */
-    
-    void init_libxmplite(void);
-    void *malloc(size_t size);
-    void free(void *ptr);
-    
 """)
 
 
@@ -231,7 +219,7 @@ ffibuilder.set_source("_libxmplite", """
   
 
 """,
-                      sources = ["libxmplite.c"] +
+                      sources=[] +
                                 glob.glob("libxmp-lite/src/*.c") +
                                 glob.glob("libxmp-lite/src/loaders/*.c"),
                       include_dirs=["./libxmp-lite/include/libxmp-lite",

@@ -1,3 +1,11 @@
+"""
+Python interface to the libxmp-lite library (part of https://github.com/cmatsuoka/libxmp)
+plays Protracker (MOD), Scream Tracker 3 (S3M), Fast Tracker II (XM), and Impulse Tracker (IT).
+
+Author: Irmen de Jong (irmen@razorvine.net)
+Software license: "MIT software license". See http://opensource.org/licenses/MIT
+"""
+
 import os
 import sys
 import inspect
@@ -7,7 +15,7 @@ from _libxmplite import lib, ffi
 from _libxmplite.lib import XMP_FORMAT_8BIT, XMP_FORMAT_UNSIGNED, XMP_FORMAT_MONO
 
 
-__version__ = "0.1"
+__version__ = "1.0"
 __libversion__ = ffi.string(lib.xmp_version).decode()
 
 

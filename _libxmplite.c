@@ -492,9 +492,7 @@ static void (*_cffi_call_python_org)(struct _cffi_externpy_s *, char *);
 
     #include <stdint.h>
     #include <stdlib.h>
-    
-    void init_libxmplite(void);
-    
+
 
 
 
