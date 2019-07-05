@@ -1,0 +1,6 @@
+graft miniaudio
+prune examples
+prune libxmp-lite
+include build_ffi_module.py
+include LICENSE
+include Makefile

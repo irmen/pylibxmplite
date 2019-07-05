@@ -22,4 +22,6 @@ build
 dist
 *.egg-info/
 .directory
+*.o
+*.so
 
