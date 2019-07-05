@@ -33,6 +33,19 @@ ffibuilder.cdef("""
 #define XMP_MIN_SRATE		4000	/* min sampling rate (Hz) */
 #define XMP_MIN_BPM		20	/* min BPM */
 
+#define XMP_FORMAT_8BIT		  1  /* Mix to 8-bit instead of 16 */
+#define XMP_FORMAT_UNSIGNED	  2  /* Mix to unsigned samples */
+#define XMP_FORMAT_MONO		  4  /* Mix to mono instead of stereo */
+
+/* error codes */
+#define XMP_END			1
+#define XMP_ERROR_INTERNAL	2	/* Internal error */
+#define XMP_ERROR_FORMAT	3	/* Unsupported module format */
+#define XMP_ERROR_LOAD		4	/* Error loading file */
+#define XMP_ERROR_DEPACK	5	/* Error depacking file */
+#define XMP_ERROR_SYSTEM	6	/* System error */
+#define XMP_ERROR_INVALID	7	/* Invalid parameter */
+#define XMP_ERROR_STATE		8	/* Invalid player state */
 
 typedef char *xmp_context;
    
@@ -111,8 +124,10 @@ struct xmp_frame_info {			/* Current frame information */
 		unsigned char sample;	/* Current sample number */
 		unsigned char volume;	/* Current volume */
 		unsigned char pan;	/* Current stereo pan */
-		unsigned char reserved;	/* Reserved */
 		struct xmp_event event;	/* Current track event */
+		
+		...;
+		
 	} channel_info[XMP_MAX_CHANNELS];
 };
 
@@ -197,7 +212,7 @@ macros =  [
             ("HAVE_LOCALTIME_R", "1"),
             ("HAVE_ROUND", "1"),
             ("HAVE_POWF", "1"),
-            ("_REENTRANT", None), 
+            ("_REENTRANT", None),
             ("LIBXMP_CORE_PLAYER", None),
             # ("XMP_SYM_VISIBILITY", None),
             # ("HAVE_SYMVER", "0"),
@@ -217,9 +232,9 @@ ffibuilder.set_source("_libxmplite", """
 
 """,
                       sources = ["libxmplite.c"] +
-                                glob.glob("libxmp-lite/src/*.c") + 
+                                glob.glob("libxmp-lite/src/*.c") +
                                 glob.glob("libxmp-lite/src/loaders/*.c"),
-                      include_dirs=["./libxmp-lite/include/libxmp-lite", 
+                      include_dirs=["./libxmp-lite/include/libxmp-lite",
                                     "./libxmp-lite/src",
                                     "./libxmp-lite/src/loaders"
                                     ],
