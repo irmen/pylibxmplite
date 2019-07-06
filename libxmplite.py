@@ -9,13 +9,13 @@ Software license: "MIT software license". See http://opensource.org/licenses/MIT
 import os
 import sys
 import inspect
-from typing import Tuple, List, Dict, Union
+from typing import Tuple, List, Optional
 from collections import namedtuple
 from _libxmplite import lib, ffi
 from _libxmplite.lib import XMP_FORMAT_8BIT, XMP_FORMAT_UNSIGNED, XMP_FORMAT_MONO
 
 
-__version__ = "1.1"
+__version__ = "1.2"
 xmp_version = ffi.string(lib.xmp_version).decode()
 
 
@@ -37,7 +37,7 @@ class ChannelInfo:
     sample = 0
     volume = 0
     pan = 0
-    event = XEvent(0, 0, 0, 0, 0, 0, 0)
+    event = None        # type: Optional[XEvent]
 
 
 class FrameInfo:
@@ -60,6 +60,22 @@ class FrameInfo:
     virt_used = 0
     sequence = 0
     channel_info = []       # type: List[ChannelInfo]
+
+
+class ModuleInfo:
+    name = ""
+    comment = ""
+    type = ""
+    pat = 0
+    trk = 0
+    chn = 0
+    ins = 0
+    smp = 0
+    spd = 0
+    bpm = 0
+    length = 0
+    rst = 0
+    gvl = 0
 
 
 def _get_filename_bytes(filename: str) -> bytes:
@@ -114,23 +130,23 @@ class Xmp:
     def scan(self) -> None:
         lib.xmp_scan_module(self._context)
 
-    def module_info(self) -> Dict[str, Union[str, int]]:
-        info = ffi.new("struct xmp_module_info *")
-        lib.xmp_get_module_info(self._context, info)
-        return {
-            "name": ffi.string(info.mod.name).decode(),
-            "comment": "" if info.comment == ffi.NULL else ffi.string(info.comment).decode(),
-            "type": ffi.string(info.mod.type).decode(),
-            "pat": info.mod.pat,
-            "trk": info.mod.trk,
-            "chn": info.mod.chn,
-            "ins": info.mod.ins,
-            "smp": info.mod.smp,
-            "spd": info.mod.spd,
-            "bpm": info.mod.bpm,
-            "rst": info.mod.rst,
-            "gvl": info.mod.gvl,
-        }
+    def module_info(self) -> ModuleInfo:
+        xinfo = ffi.new("struct xmp_module_info *")
+        lib.xmp_get_module_info(self._context, xinfo)
+        info = ModuleInfo()
+        info.name = ffi.string(xinfo.mod.name).decode()
+        info.comment = "" if xinfo.comment == ffi.NULL else ffi.string(xinfo.comment).decode()
+        info.type = ffi.string(xinfo.mod.type).decode()
+        info.pat = xinfo.mod.pat
+        info.trk = xinfo.mod.trk
+        info.chn = xinfo.mod.chn
+        info.ins = xinfo.mod.ins
+        info.smp = xinfo.mod.smp
+        info.spd = xinfo.mod.spd
+        info.bpm = xinfo.mod.bpm
+        info.rst = xinfo.mod.rst
+        info.gvl = xinfo.mod.gvl
+        return info
 
     def start(self, sample_rate: int = 44100, format: int = 0) -> None:
         result = lib.xmp_start_player(self._context, sample_rate, format)
@@ -191,8 +207,11 @@ class Xmp:
         info = ChannelInfo()
         for name, value in inspect.getmembers(cinfo):
             setattr(info, name, value)
-        info.event = XEvent(cinfo.event.note, cinfo.event.ins, cinfo.event.vol,
-                            cinfo.event.fxt, cinfo.event.fxp, cinfo.event.f2t, cinfo.event.f2p)
+        if cinfo.event.note > 0:
+            info.event = XEvent(cinfo.event.note, cinfo.event.ins, cinfo.event.vol,
+                                cinfo.event.fxt, cinfo.event.fxp, cinfo.event.f2t, cinfo.event.f2p)
+        else:
+            info.event = None
         return info
 
 

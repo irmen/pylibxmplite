@@ -12,12 +12,33 @@ import miniaudio
 import libxmplite
 
 
-def stream_module(xmp: libxmplite.Xmp):
+class Display:
+    def __init__(self, mod_info: libxmplite.ModuleInfo) -> None:
+        self.mod_info = mod_info
+
+    def update(self, info: libxmplite.FrameInfo) -> None:
+        self.cls()
+        print("PLAYING MODULE: ", self.mod_info.name)
+        print("  (", self.mod_info.type, " ", self.mod_info.chn, "channels ", self.mod_info.bpm, "bpm )")
+        print("\n#", info.time, "/", info.total_time, "  pos", info.pos, " pat", info.pattern, " row", info.row, "\n")
+        for ch in info.channel_info[:mod_info.chn]:
+            print("*" if ch.event else " ", "I{:03d} #{:03d}".format(ch.instrument, ch.note), end="")
+            volume = "#" * int((ch.volume / mod_info.gvl) * 64)
+            print(" |", volume.ljust(64, " "), "|")
+        print("\nPress enter to quit.", flush=True)
+
+    def cls(self) -> None:
+        print("\033[2J\033[H", end="")
+
+    def close(self) -> None:
+        pass
+
+
+def stream_module(xmp: libxmplite.Xmp, display: Display):
     required_frames = yield b""  # generator initialization
     while True:
         buffer = xmp.play_buffer(required_frames * 2 * 2)
-        info = xmp.frame_info()
-        print("\r #", info.time, "pos:", info.pos, "pat:", info.pattern, "row:", info.row, end="     ", flush=True)
+        display.update(xmp.frame_info())
         required_frames = yield buffer
 
 
@@ -31,15 +52,16 @@ if __name__ == "__main__":
     xmp.load(sys.argv[1])
     xmp.start(device.sample_rate)
 
-    stream = stream_module(xmp)
+    mod_info = xmp.module_info()
+    display = Display(mod_info)
+    stream = stream_module(xmp, display)
     next(stream)  # start the generator
     device.start(stream)
 
-    info = xmp.module_info()
-    print("~~~~~~~~~~", info["name"], "~~~~~~~~~")
-    print(info["type"], " file playing in the background. Press enter to stop playback!\n")
+    print("\nFile playing in the background. Press enter to stop playback!\n")
     input()
 
     xmp.stop()
     xmp.release()
     device.close()
+    display.close()
