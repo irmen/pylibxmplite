@@ -4,8 +4,9 @@
 
 # Python libxmp-lite  modplayer
 
-This module (pun intented) provides a Python interface to the
-libxmp-lite (a cut-down version of [libxmp](https://github.com/cmatsuoka/libxmp) library.
+This module (pun intented!) provides a Python interface to the
+[libxmp-lite](https://github.com/cmatsuoka/libxmp/tree/master/lite)
+(a cut-down version of [libxmp](https://github.com/cmatsuoka/libxmp) library).
 The libxmp-lite library is linked into the extenson module, no additional
 fiddling and installation is required. 
 
@@ -18,9 +19,7 @@ is not available on pypi, you'll have to get it to compile as well which may be 
 on this platform. You have to make sure that the required tools that allow you to compile Python extension modules
 are installed (Visual Studio or the VC++ build tools).
  
-Software license for these Python bindings: MIT
-
-Software license for the libxmp library: LGPL
+Software license for these Python bindings, and for libxmp-lite: MIT
 
 
 ## Example
