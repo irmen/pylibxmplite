@@ -3,8 +3,8 @@
 Example program that loads the given mod file in the Xmp player,
 and uses it in a miniaudio playback generator function to stream the music.
 
-Probably doesn't work very well on Windows because Windows console doesn't know
-about ANSI escape codes to clear the screen. Try modplay-windows.py there.
+Windows version that is displaying far less information on screen because
+the windows console is.... well.
 
 (miniaudio: https://pypi.org/project/miniaudio/ )
 
@@ -18,20 +18,11 @@ import libxmplite
 class Display:
     def __init__(self, mod_info: libxmplite.ModuleInfo) -> None:
         self.mod_info = mod_info
-
-    def update(self, info: libxmplite.FrameInfo) -> None:
-        self.cls()
         print("PLAYING MODULE: ", self.mod_info.name)
         print("  (", self.mod_info.type, " ", self.mod_info.chn, "channels ", self.mod_info.bpm, "bpm )")
-        print("\n#", info.time, "/", info.total_time, "  pos", info.pos, " pat", info.pattern, " row", info.row, "\n")
-        for ch in info.channel_info[:mod_info.chn]:
-            print("*" if ch.event else " ", "I{:03d} #{:03d}".format(ch.instrument, ch.note), end="")
-            volume = "#" * int((ch.volume / mod_info.gvl) * 64)
-            print(" |", volume.ljust(64, " "), "|")
-        print("\nPress enter to quit.", flush=True)
 
-    def cls(self) -> None:
-        print("\033[2J\033[H", end="")
+    def update(self, info: libxmplite.FrameInfo) -> None:
+        print("\r #", info.time, "/", info.total_time, "  pos", info.pos, " pat", info.pattern, " row", info.row, end="       ", flush=True)
 
 
 def stream_module(xmp: libxmplite.Xmp, display: Display):
