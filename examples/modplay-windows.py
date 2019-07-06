@@ -27,10 +27,13 @@ class Display:
 
 def stream_module(xmp: libxmplite.Xmp, display: Display):
     required_frames = yield b""  # generator initialization
-    while True:
-        buffer = xmp.play_buffer(required_frames * 2 * 2)
-        display.update(xmp.frame_info())
-        required_frames = yield buffer
+    try:
+        while True:
+            buffer = xmp.play_buffer(required_frames * 2 * 2)
+            display.update(xmp.frame_info())
+            required_frames = yield buffer
+    except libxmplite.XmpError as x:
+        print("XMP Playback error!!", x)
 
 
 if __name__ == "__main__":

@@ -32,6 +32,7 @@ print("Initial BPM:", info.bpm)
 print("Module length in patterns:", info.length)
 print("Restart position:", info.rst)
 print("Global volume:", info.gvl)
+print("Volume scale:", info.vol_base)
 print()
 
 frame_info = xmp.play_frame()

@@ -15,7 +15,7 @@ from _libxmplite import lib, ffi
 from _libxmplite.lib import XMP_FORMAT_8BIT, XMP_FORMAT_UNSIGNED, XMP_FORMAT_MONO
 
 
-__version__ = "1.2"
+__version__ = "1.3"
 xmp_version = ffi.string(lib.xmp_version).decode()
 
 
@@ -23,9 +23,7 @@ XEvent = namedtuple("Event", ["note", "ins", "vol", "fxt", "fxp", "f2t", "f2p"])
 
 
 class XmpError(Exception):
-    def __init__(self, msg: str, errorcode: int) -> None:
-        super().__init__(msg)
-        self.errorcode = errorcode
+    pass
 
 
 class ChannelInfo:
@@ -76,6 +74,7 @@ class ModuleInfo:
     length = 0
     rst = 0
     gvl = 0
+    vol_base = 0
 
 
 def _get_filename_bytes(filename: str) -> bytes:
@@ -145,7 +144,8 @@ class Xmp:
         info.spd = xinfo.mod.spd
         info.bpm = xinfo.mod.bpm
         info.rst = xinfo.mod.rst
-        info.gvl = xinfo.mod.gvl
+        info.gvl = min(xinfo.mod.gvl, xinfo.vol_base)
+        info.vol_base = xinfo.vol_base
         return info
 
     def start(self, sample_rate: int = 44100, format: int = 0) -> None:

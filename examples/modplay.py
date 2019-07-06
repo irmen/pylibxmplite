@@ -26,8 +26,8 @@ class Display:
         print("\n#", info.time, "/", info.total_time, "  pos", info.pos, " pat", info.pattern, " row", info.row, "\n")
         for ch in info.channel_info[:mod_info.chn]:
             print("*" if ch.event else " ", "I{:03d} #{:03d}".format(ch.instrument, ch.note), end="")
-            volume = "#" * int((ch.volume / mod_info.gvl) * 64)
-            print(" |", volume.ljust(64, " "), "|")
+            volume = "#" * int((ch.volume / mod_info.gvl) * mod_info.vol_base / 2)
+            print(" |", volume.ljust(mod_info.vol_base // 2, " "), "|")
         print("\nPress enter to quit.", flush=True)
 
     def cls(self) -> None:
@@ -36,10 +36,13 @@ class Display:
 
 def stream_module(xmp: libxmplite.Xmp, display: Display):
     required_frames = yield b""  # generator initialization
-    while True:
-        buffer = xmp.play_buffer(required_frames * 2 * 2)
-        display.update(xmp.frame_info())
-        required_frames = yield buffer
+    try:
+        while True:
+            buffer = xmp.play_buffer(required_frames * 2 * 2)
+            display.update(xmp.frame_info())
+            required_frames = yield buffer
+    except libxmplite.XmpError as x:
+        print("XMP Playback error!!", x)
 
 
 if __name__ == "__main__":
