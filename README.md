@@ -22,6 +22,8 @@ are installed (Visual Studio or the VC++ build tools).
 Software license for these Python bindings, and for libxmp-lite: MIT
 
 
+![Modplayer GUI screenshot](./examples/screenshot.png?raw=true "Screenshot of the GUI modplayer")
+
 ## Example
 
 ### Most basic mod decoding
