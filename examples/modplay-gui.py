@@ -68,7 +68,7 @@ class Gui(tkinter.Tk):
         self.tracks_holder.pack(fill=tkinter.X, expand=tkinter.YES, padx=16, pady=16)
         # pbstyle = tkinter.ttk.Style()
         # pbstyle.theme_use("classic")
-        self.audiodevice = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=48000)
+        self.audiodevice = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=44100)
         self.xmp = libxmplite.Xmp()
         self.tracks = []
         self.playing = False
