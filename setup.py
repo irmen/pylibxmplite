@@ -3,9 +3,6 @@ import os
 import sys
 from setuptools import setup
 
-if sys.version_info < (3, 5):
-    raise SystemExit("requires Python 3.5 or newer")
-
 modules_path = os.path.abspath(".")  # to make sure the compiler can find the required include files
 PKG_VERSION = re.search(r'^__version__\s*=\s*"(.+)"', open("libxmplite.py", "rt").read(), re.MULTILINE).groups()[0]
 
