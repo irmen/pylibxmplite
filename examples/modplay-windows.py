@@ -40,7 +40,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("must give mod filename to play as argument")
 
-    device = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=44100)
+    device = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=44100, buffersize_msec=100)
 
     xmp = libxmplite.Xmp()
     xmp.load(sys.argv[1])

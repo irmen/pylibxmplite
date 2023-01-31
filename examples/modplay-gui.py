@@ -14,11 +14,13 @@ from tkinter.filedialog import askopenfilename
 from tkinter.font import nametofont
 import miniaudio
 import libxmplite
+import queue
 
 
 class Gui(tkinter.Tk):
     def __init__(self):
         super().__init__()
+        self.updates_queue = queue.Queue()
         default_font = nametofont("TkDefaultFont")
         default_font.configure(size=12)
         self.wm_title("Python ModPlayer -- libxmplite v{} -- xmp v{}".format(libxmplite.__version__, libxmplite.xmp_version))
@@ -68,12 +70,13 @@ class Gui(tkinter.Tk):
         self.tracks_holder.pack(fill=tkinter.X, expand=tkinter.YES, padx=16, pady=16)
         # pbstyle = tkinter.ttk.Style()
         # pbstyle.theme_use("classic")
-        self.audiodevice = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=44100)
+        self.audiodevice = miniaudio.PlaybackDevice(output_format=miniaudio.SampleFormat.SIGNED16, nchannels=2, sample_rate=44100, buffersize_msec=50)
         self.xmp = libxmplite.Xmp()
         self.tracks = []
         self.playing = False
         self.previous_update_time = 0
-
+        self.after(1, self.update_from_queue)
+        
     def start(self):
         self.mainloop()
 
@@ -147,12 +150,21 @@ class Gui(tkinter.Tk):
             else:
                 track.event["fg"] = "gray70"
 
+    def update_from_queue(self):
+        while True:
+            try:
+                frame_info = self.updates_queue.get_nowait()
+                self.update_display(frame_info)
+            except queue.Empty:
+                break
+        self.after(1, self.update_from_queue)
+
     def stream_module(self):
         required_frames = yield b""  # generator initialization
         try:
             while True:
                 buffer = self.xmp.play_buffer(required_frames * 2 * 2)
-                self.update_display(self.xmp.frame_info())
+                self.updates_queue.put(self.xmp.frame_info())
                 required_frames = yield buffer
         except libxmplite.XmpError as x:
             print("XMP Playback error!!", x)
