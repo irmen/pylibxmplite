@@ -1,26 +1,14 @@
 .PHONY:  all win_dist dist upload
 
 all:
-	@echo "Targets:  test, dist, win_wheels, linux_wheel, check_upload, upload"
+	@echo "Targets:  wheel, win_wheel, check_upload, upload"
 
-test:
-	python setup.py test
-
-
-win_wheels:
+win_wheel:
 	cmd /C del /q dist\*
-	py -3-32 setup.py clean --all
-	py -3-32 setup.py bdist_wheel
-	py -3-64 setup.py clean --all
-	py -3-64 setup.py bdist_wheel
+	py -3-64 -m build --wheel
 
-linux_wheel: dist
-	python setup.py bdist_wheel
-
-dist:
-	rm -f dist/*
-	python setup.py clean --all
-	python setup.py sdist
+wheel: 
+	python -m build --wheel --sdist
 
 upload: check_upload
 	twine upload dist/*
